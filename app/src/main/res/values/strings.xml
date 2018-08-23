@@ -10,4 +10,5 @@
 
     <string name="weatherInfo">Температура: %s \nДавление: %s \nВлажность: %s \n%s \n\nобновлено: %s</string>
     <string name="permissions_not_granted">Конец</string>
+    <string name="get_no_location">Не найдено местоположение</string>
 </resources>

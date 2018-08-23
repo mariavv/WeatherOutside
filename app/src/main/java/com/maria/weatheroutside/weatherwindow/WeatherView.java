@@ -10,4 +10,6 @@ public interface WeatherView {
     void errorGetWeather(Throwable throwable);
 
     void requestPermission(String[] permissions, int requestCodePermission);
+
+    void showMessage(int messageRes);
 }

@@ -79,7 +79,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
 
     @Override
     public void errorGetWeather(Throwable throwable) {
-        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+        showMessage(throwable.getMessage());
     }
 
     @Override
@@ -88,8 +88,17 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
     }
 
     @Override
+    public void showMessage(int messageRes) {
+        showMessage(getString(messageRes));
+    }
+
+    @Override
     public void close() {
         exit();
+    }
+
+    private void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     private void exit() {

@@ -38,7 +38,6 @@ class WeatherPresenter implements WeatherRepo.Listener {
         if (haveLocationPermission()) {
             getWeather();
         }
-        ;
     }
 
     public void exitBtnPressed() {
@@ -64,7 +63,7 @@ class WeatherPresenter implements WeatherRepo.Listener {
             case REQUEST_CODE_PERMISSION:
                 for (int grant : grantResults) {
                     if (grant != PackageManager.PERMISSION_GRANTED) {
-                        view.errorGetWeather(new Throwable(context.getString(R.string.permissions_not_granted)));
+                        view.showMessage(R.string.permissions_not_granted);
                         view.close();
                         return;
                     }
@@ -76,13 +75,24 @@ class WeatherPresenter implements WeatherRepo.Listener {
     private void getWeather() {
         LocationManager locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
         if (locationManager != null) {
-            @SuppressLint("MissingPermission")
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            Location location = getLastKnownLocation(locationManager, LocationManager.GPS_PROVIDER);
             if (location != null) {
                 sendWeatherRequest(location);
+            } else {
+                location = getLastKnownLocation(locationManager, LocationManager.NETWORK_PROVIDER);
+                if (location != null) {
+                    sendWeatherRequest(location);
+                } else {
+                    view.showMessage(R.string.get_no_location);
+                }
             }
         }
 
+    }
+
+    @SuppressLint("MissingPermission")
+    private Location getLastKnownLocation(LocationManager locationManager, String provider) {
+        return locationManager.getLastKnownLocation(provider);
     }
 
     @SuppressLint("CheckResult")
