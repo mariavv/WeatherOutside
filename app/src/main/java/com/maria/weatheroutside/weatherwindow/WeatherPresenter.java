@@ -48,17 +48,7 @@ class WeatherPresenter implements WeatherRepo.Listener {
         view = null;
     }
 
-    @Override
-    public void onResponse(BaseResponse<WeatherData> weatherData) {
-        view.showWeather(weatherData.getData());
-    }
-
-    @Override
-    public void onFailure(Throwable t) {
-        view.errorGetWeather(t);
-    }
-
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, int[] grantResults) {
         switch (requestCode) {
             case REQUEST_CODE_PERMISSION:
                 for (int grant : grantResults) {
@@ -72,14 +62,27 @@ class WeatherPresenter implements WeatherRepo.Listener {
         }
     }
 
+    @Override
+    public void onResponse(BaseResponse<WeatherData> weatherData) {
+        view.showWeather(weatherData.getData());
+    }
+
+    @Override
+    public void onFailure(Throwable t) {
+        view.errorGetWeather(t);
+    }
+
     private void getWeather() {
         LocationManager locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
+
         if (locationManager != null) {
             Location location = getLastKnownLocation(locationManager, LocationManager.GPS_PROVIDER);
+
             if (location != null) {
                 sendWeatherRequest(location);
             } else {
                 location = getLastKnownLocation(locationManager, LocationManager.NETWORK_PROVIDER);
+
                 if (location != null) {
                     sendWeatherRequest(location);
                 } else {

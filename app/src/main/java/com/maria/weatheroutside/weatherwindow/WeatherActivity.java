@@ -57,7 +57,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        presenter.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        presenter.onRequestPermissionsResult(requestCode, grantResults);
     }
 
     @Override
