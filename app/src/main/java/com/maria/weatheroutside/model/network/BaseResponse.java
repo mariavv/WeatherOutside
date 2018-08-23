@@ -4,11 +4,15 @@ import com.google.gson.annotations.SerializedName;
 
 public class BaseResponse<T> {
 
-    @SerializedName("main")
+    @SerializedName("")
+
     protected T data;
 
+    public BaseResponse(T data) {
+        this.data = data;
+    }
+
     public T getData() {
-        int r = 0;
         return data;
     }
 }

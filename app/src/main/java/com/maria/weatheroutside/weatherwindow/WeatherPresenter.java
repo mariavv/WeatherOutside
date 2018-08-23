@@ -5,44 +5,40 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 
-import com.maria.weatheroutside.model.network.Coordinates;
+import com.maria.weatheroutside.R;
+import com.maria.weatheroutside.model.entity.WeatherData;
+import com.maria.weatheroutside.model.network.BaseResponse;
 import com.maria.weatheroutside.model.repository.WeatherRepo;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 import static android.content.Context.LOCATION_SERVICE;
 
-class WeatherPresenter {
+class WeatherPresenter implements WeatherRepo.Listener {
+
+    private static final int REQUEST_CODE_PERMISSION = 1;
 
     private WeatherView view;
 
     private Context context;
 
-    private LocationManager locationManager;
-
-    private final WeatherRepo weatherRepo = new WeatherRepo();
+    private final WeatherRepo weatherRepo = new WeatherRepo(this);
 
     WeatherPresenter(WeatherView view) {
         this.view = view;
         this.context = (Context) view;
     }
 
-    public void onCreate() {
-        checkLocationPermission();
+    public void onStart() {
+        sync();
+    }
 
-        locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
-        if (locationManager != null) {
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            if (location != null) {
-                sendWeatherRequest(location);
-            }
+    public void sync() {
+        if (haveLocationPermission()) {
+            getWeather();
         }
+        ;
     }
 
     public void exitBtnPressed() {
@@ -53,29 +49,68 @@ class WeatherPresenter {
         view = null;
     }
 
-    @SuppressLint("CheckResult")
-    private void sendWeatherRequest(Location location) {
-        Coordinates.setCoordinates(location.getLatitude(), location.getLongitude());
-
-        weatherRepo.getWeather(location.getLatitude(), location.getLongitude())
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(view::showWeather, view::errorGetWeather);
+    @Override
+    public void onResponse(BaseResponse<WeatherData> weatherData) {
+        view.showWeather(weatherData.getData());
     }
 
-    private void checkLocationPermission() {
+    @Override
+    public void onFailure(Throwable t) {
+        view.errorGetWeather(t);
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_PERMISSION:
+                for (int grant : grantResults) {
+                    if (grant != PackageManager.PERMISSION_GRANTED) {
+                        view.errorGetWeather(new Throwable(context.getString(R.string.permissions_not_granted)));
+                        view.close();
+                        return;
+                    }
+                }
+                getWeather();
+        }
+    }
+
+    private void getWeather() {
+        LocationManager locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
+        if (locationManager != null) {
+            @SuppressLint("MissingPermission")
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (location != null) {
+                sendWeatherRequest(location);
+            }
+        }
+
+    }
+
+    @SuppressLint("CheckResult")
+    private void sendWeatherRequest(Location location) {
+        weatherRepo.getCurrentWeather(location.getLatitude(), location.getLongitude(),
+                context.getString(R.string.measuring_system), context.getString(R.string.locale));
+    }
+
+    private boolean haveLocationPermission() {
         String[] permissions = new String[]{
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.INTERNET};
 
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                &&
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-
-            view.requestPermissions(permissions);
+        for (String permission : permissions) {
+            if (checkPermission(permission)) {
+                view.requestPermission(permissions, REQUEST_CODE_PERMISSION);
+                return false;
+            }
         }
+
+        return true;
+    }
+
+    private boolean checkPermission(String permission) {
+        return getPermissionState(permission) != PackageManager.PERMISSION_GRANTED;
+    }
+
+    private int getPermissionState(String permission) {
+        return ActivityCompat.checkSelfPermission(context, permission);
     }
 }

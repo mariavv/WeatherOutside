@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">WeatherOutside</string>
+    <string name="weather_activity_label">Погода за окном</string>
 
     <string name="action_logout">Выйти</string>
+    <string name="action_sync">Обновить</string>
+
+    <string name="measuring_system">metric</string>
+    <string name="locale">ru</string>
+
+    <string name="weatherInfo">Температура: %s \nДавление: %s \nВлажность: %s \n%s \n\nобновлено: %s</string>
+    <string name="permissions_not_granted">Конец</string>
 </resources>

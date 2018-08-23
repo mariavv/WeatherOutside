@@ -16,7 +16,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".weatherwindow.WeatherActivity">
+        <activity
+            android:name=".weatherwindow.WeatherActivity"
+            android:label="@string/weather_activity_label">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

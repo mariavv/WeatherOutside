@@ -2,15 +2,15 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--<item
+    <item
         android:id="@+id/sync"
         android:icon="@android:drawable/ic_popup_sync"
         android:title="@string/action_sync"
-        app:showAsAction="ifRoom" />-->
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/exit"
         android:icon="@drawable/ic_exit_to_app"
         android:title="@string/action_logout"
-        app:showAsAction="withText" />
+        app:showAsAction="ifRoom" />
 </menu>

@@ -10,8 +10,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestServiceProvider {
 
-    private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
-
     private static final RestServiceProvider INSTANCE = new RestServiceProvider();
     private RestService restService;
 
@@ -31,7 +29,7 @@ public class RestServiceProvider {
 
     private RestService createRestService() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(RestService.BASE_URL)
                 .client(provideClient())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

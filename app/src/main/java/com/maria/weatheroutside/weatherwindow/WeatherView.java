@@ -1,13 +1,13 @@
 package com.maria.weatheroutside.weatherwindow;
 
-import com.maria.weatheroutside.model.entity.Weather;
+import com.maria.weatheroutside.model.entity.WeatherData;
 
 public interface WeatherView {
     void close();
     
-    void showWeather(Weather weather);
+    void showWeather(WeatherData weatherData);
 
     void errorGetWeather(Throwable throwable);
 
-    void requestPermissions(String[] permissions);
+    void requestPermission(String[] permissions, int requestCodePermission);
 }
