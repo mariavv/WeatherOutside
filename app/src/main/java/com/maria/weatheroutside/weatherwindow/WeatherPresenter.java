@@ -90,7 +90,6 @@ class WeatherPresenter implements WeatherRepo.Listener {
                 }
             }
         }
-
     }
 
     @SuppressLint("MissingPermission")
@@ -106,8 +105,9 @@ class WeatherPresenter implements WeatherRepo.Listener {
 
     private boolean haveLocationPermission() {
         String[] permissions = new String[]{
-                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.INTERNET};
+                Manifest.permission.INTERNET,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION };
 
         for (String permission : permissions) {
             if (checkPermission(permission)) {

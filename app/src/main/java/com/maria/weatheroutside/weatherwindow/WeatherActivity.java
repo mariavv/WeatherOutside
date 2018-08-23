@@ -1,6 +1,5 @@
 package com.maria.weatheroutside.weatherwindow;
 
-import android.Manifest;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;

@@ -1,6 +1,5 @@
 package com.maria.weatheroutside.model.entity;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -14,18 +13,18 @@ public class WeatherData {
     private Main main;
 
     @SerializedName("dt")
-    private Integer dt;
+    private String dt;
 
     @SerializedName("id")
-    private Integer id;
+    private String id;
 
     @SerializedName("name")
     private String name;
 
     @SerializedName("cod")
-    private Integer cod;
+    private String cod;
 
-    public WeatherData(List<Weather> weather, Main main, Integer dt, Integer id, String name, Integer cod) {
+    public WeatherData(List<Weather> weather, Main main, String dt, String id, String name, String cod) {
         this.weather = weather;
         this.main = main;
         this.dt = dt;
@@ -42,11 +41,11 @@ public class WeatherData {
         return main;
     }
 
-    public Integer getDt() {
+    public String getDt() {
         return dt;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
@@ -54,7 +53,7 @@ public class WeatherData {
         return name;
     }
 
-    public Integer getCod() {
+    public String getCod() {
         return cod;
     }
 }

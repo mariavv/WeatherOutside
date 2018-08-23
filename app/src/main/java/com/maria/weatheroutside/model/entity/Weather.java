@@ -1,11 +1,10 @@
 package com.maria.weatheroutside.model.entity;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Weather {
     @SerializedName("id")
-    private Integer id;
+    private String id;
 
     @SerializedName("main")
     private String main;
@@ -16,14 +15,14 @@ public class Weather {
     @SerializedName("icon")
     private String icon;
 
-    public Weather(Integer id, String main, String description, String icon) {
+    public Weather(String id, String main, String description, String icon) {
         this.id = id;
         this.main = main;
         this.description = description;
         this.icon = icon;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 

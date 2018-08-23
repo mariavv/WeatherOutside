@@ -7,7 +7,6 @@ import com.maria.weatheroutside.model.network.BaseResponse;
 import com.maria.weatheroutside.model.network.RestService;
 import com.maria.weatheroutside.model.network.RestServiceProvider;
 
-import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
